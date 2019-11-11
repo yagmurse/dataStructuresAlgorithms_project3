@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 
+
 using namespace std;
 
 struct Person{
@@ -13,6 +14,7 @@ struct Person{
 };
 
 class SeatOperations{
+
 
 private:
     vector<Person> lines[2];
@@ -24,6 +26,22 @@ public:
     void printAllSeats(ofstream& outFile);
 
     // YOU CAN ADD YOUR HELPER FUNCTIONS
+
+    void person1replace(int line,Person person);
+    void person2replace(int line,int seat,Person person);
+    void person3replace(int line,int seat,Person person);
+    void replaceDecide(int line,int seat,Person person);
+   int line(const string &ticket) {
+       char s=ticket[0];
+       if(s=='A')
+           return 0;
+       else
+           return 1;
+
+   }
+   int seat(const string &ticket) {
+       return atoi(&ticket[1]);
+   }
 
 };
 
