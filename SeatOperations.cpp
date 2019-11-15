@@ -1,6 +1,6 @@
 /*
-Student Name:
-Student Number:
+Student Name:Yağmur Selek
+Student Number: 2017400273
 Project Number: 3
 Compile Status: [SUCCESS/FAIL]
 Running Status: [SUCCESS/FAIL]
@@ -13,48 +13,47 @@ using namespace std;
 SeatOperations::SeatOperations(int N, int M){
 
     // IMPLEMENT ME!
+    //assigns the given integers to M and N
     this->N = N;
     this->M = M;
-
+    //decides the size of the arrays regarding given integers
    lines[0].resize(N);
    lines[1].resize(M);
 
 
 }
-
+//changes the given string ticketInfo to desired line and seat
+//creates given person type and places it as intended
 void SeatOperations::addNewPerson(int personType, const string& ticketInfo){
     // IMPLEMENT ME!
-
-    cout << " girdim" << endl;
-    int l=line(ticketInfo);
-    int s=seat(ticketInfo);
-    int sizeOfLine = 0;
+    //line&seat methods from header file takes the string and gives the integer value
+         int l=line(ticketInfo);
+         int s=seat(ticketInfo);
+         int sizeOfLine = 0;
     (l == 0) ? (sizeOfLine=N) :(sizeOfLine=M);
-    Person newPerson;
-    Person removedPerson;
+     Person newPerson;
+     Person removedPerson;
     newPerson.seatNumber=s;
     newPerson.type=personType;
     newPerson.line=l;
+         int seatModulo=(s-1)%sizeOfLine;
+     removedPerson=lines[l][seatModulo];
+    lines[l][seatModulo]=newPerson;
+    replaceDecide(l,seatModulo,removedPerson);
 
-    int seatModulo=(s-1)%sizeOfLine;
-
-        removedPerson=lines[l][seatModulo];
-        lines[l][seatModulo]=newPerson;
-        replaceDecide(l,seatModulo,removedPerson);
-
-    cout << " ciktim" << endl;
 }
-
+//includes the actions desired for person type 1
 void SeatOperations::person1replace(int line,Person newPerson) {
     int newLine= !(line);
     int size=lines[newLine].size();
     int newSeat=(newPerson.seatNumber-1)%size;
     Person removedPerson;
-    removedPerson=lines[newLine][newSeat]; //aşağıda değiştirince removedpers da değiişecek mi
+    removedPerson=lines[newLine][newSeat];
     lines[newLine][newSeat]=newPerson;
     replaceDecide(newLine,newSeat,removedPerson);
 
 }
+//includes the actions desired for person type 2
 void SeatOperations::person2replace(int line, int seat,Person newPerson) {
     int size;
     (line == 0) ? (size=N) :(size=M);
@@ -68,13 +67,13 @@ void SeatOperations::person2replace(int line, int seat,Person newPerson) {
     lines[line][newSeat]=newPerson;
     replaceDecide(line,newSeat,removedPerson);
 }
-
+//includes the actions desired for person type 3
 void SeatOperations ::person3replace(int line, int seat, Person person) {
     Person removedPerson;
     int back=2*person.type3LastOperation+1;
     person.type3LastOperation+=1;
-    int size;
-    (line == 0) ? (size=N) :(size=M);
+   // int size;
+    //(line == 0) ? (size=N) :(size=M);
     int newSeat=(seat+back)%(M+N);
 
     if(newSeat>=N) {
@@ -107,6 +106,7 @@ void SeatOperations::printAllSeats(ofstream& outFile){
 
 
 }
+//decides which operation is going to be performed and operates it
 void SeatOperations::replaceDecide(int line, int seat, Person person) {
     if(person.type==0) {
         return;
