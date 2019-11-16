@@ -29,15 +29,14 @@ void SeatOperations::addNewPerson(int personType, const string& ticketInfo){
     //line&seat methods from header file takes the string and gives the integer value
          int l=line(ticketInfo);
          int s=seat(ticketInfo);
-         int sizeOfLine = 0;
-    (l == 0) ? (sizeOfLine=N) :(sizeOfLine=M);
+         int sizeOfLine = (l == 0) ? (N) :(M);
      Person newPerson;
      Person removedPerson;
     newPerson.seatNumber=s;
     newPerson.type=personType;
     newPerson.line=l;
-         int seatModulo=(s-1)%sizeOfLine;
-     removedPerson=lines[l][seatModulo];
+    int seatModulo=(s-1)%sizeOfLine;
+    removedPerson=lines[l][seatModulo];
     lines[l][seatModulo]=newPerson;
     replaceDecide(l,seatModulo,removedPerson);
 
@@ -47,22 +46,19 @@ void SeatOperations::person1replace(int line,Person newPerson) {
     int newLine= !(line);
     int size=lines[newLine].size();
     int newSeat=(newPerson.seatNumber-1)%size;
-    Person removedPerson;
-    removedPerson=lines[newLine][newSeat];
+    Person removedPerson = lines[newLine][newSeat];
     lines[newLine][newSeat]=newPerson;
     replaceDecide(newLine,newSeat,removedPerson);
 
 }
 //includes the actions desired for person type 2
 void SeatOperations::person2replace(int line, int seat,Person newPerson) {
-    int size;
-    (line == 0) ? (size=N) :(size=M);
+    int size=(line == 0) ? (N) :(M);
     int newSeat=((seat+1)%size);
     Person removedPerson;
     if(newSeat==0) {
         line = !line;
     }
-
     removedPerson=lines[line][newSeat];
     lines[line][newSeat]=newPerson;
     replaceDecide(line,newSeat,removedPerson);
@@ -72,11 +68,9 @@ void SeatOperations ::person3replace(int line, int seat, Person person) {
     Person removedPerson;
     int back=2*person.type3LastOperation+1;
     person.type3LastOperation+=1;
-   // int size;
-    //(line == 0) ? (size=N) :(size=M);
-    int newSeat=(seat+back)%(M+N);
-
-    if(newSeat>=N) {
+    //following mod operations assures us to take a positive result
+    int newSeat=((seat+back)%(M+N))%(M+N);
+     if(newSeat>=N) {
         newSeat-=N;
         line=!(line);
     }
@@ -90,20 +84,15 @@ void SeatOperations ::person3replace(int line, int seat, Person person) {
 void SeatOperations::printAllSeats(ofstream& outFile){
     // IMPLEMENT ME!
 
-   for(int i=0;i<N;i++) {
-        outFile << lines[0][i].type;
-        if(lines[0][i].type != 0)
-            outFile << " " << (lines[0][i].line==0 ? 'A':'B') << lines[0][i].seatNumber ;
+   for(int i=0;i<N+M;i++) {
+       int place=(i<N) ? (i) : (i-N);
+       int line=(i<N) ? (0) : (1);
+
+        outFile << lines[line][place].type;
+        if(lines[line][place].type != 0)
+            outFile << " " << (lines[line][place].line==0 ? 'A':'B') << lines[line][place].seatNumber ;
         outFile << endl;
     }
-    for(int i=0;i<M;i++) {
-        outFile << lines[1][i].type ;
-        if(lines[1][i].type != 0)
-            outFile << " " << (lines[1][i].line==0 ? 'A':'B' ) << lines[1][i].seatNumber;
-        outFile << endl;
-    }
-
-
 
 }
 //decides which operation is going to be performed and operates it

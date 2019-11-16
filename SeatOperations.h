@@ -33,11 +33,8 @@ public:
     void replaceDecide(int line,int seat,Person person);
    int line(const string &ticket) {
        char s=ticket[0];
-       if(s=='A')
-           return 0;
-       else
-           return 1;
-
+       int i= (s=='A') ? (0) : (1);
+       return i;
    }
    int seat(const string &ticket) {
        return atoi(&ticket[1]);
